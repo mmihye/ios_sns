@@ -14,6 +14,8 @@
 		5D059DC62A3DD76C0026ACE7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D059DC52A3DD76C0026ACE7 /* Assets.xcassets */; };
 		5D059DC92A3DD76C0026ACE7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D059DC72A3DD76C0026ACE7 /* LaunchScreen.storyboard */; };
 		5D059DD12A3DD7940026ACE7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D059DD02A3DD7940026ACE7 /* LoginViewController.swift */; };
+		5D32BBEE2A3DF19200036417 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D32BBED2A3DF19200036417 /* PostTableViewCell.swift */; };
+		5DFAC7FD2A3DEC6600B774AC /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFAC7FC2A3DEC6600B774AC /* MainViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		5D059DC82A3DD76C0026ACE7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5D059DCA2A3DD76C0026ACE7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D059DD02A3DD7940026ACE7 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		5D32BBED2A3DF19200036417 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
+		5DFAC7FC2A3DEC6600B774AC /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +70,8 @@
 				5D059DCA2A3DD76C0026ACE7 /* Info.plist */,
 				5D059DD02A3DD7940026ACE7 /* LoginViewController.swift */,
 				5D00F23E2A3DE7B90015F2C1 /* SignUpViewController.swift */,
+				5DFAC7FC2A3DEC6600B774AC /* MainViewController.swift */,
+				5D32BBED2A3DF19200036417 /* PostTableViewCell.swift */,
 			);
 			path = "ios-sns";
 			sourceTree = "<group>";
@@ -145,6 +151,8 @@
 				5D059DBD2A3DD76B0026ACE7 /* AppDelegate.swift in Sources */,
 				5D00F23F2A3DE7B90015F2C1 /* SignUpViewController.swift in Sources */,
 				5D059DBF2A3DD76B0026ACE7 /* SceneDelegate.swift in Sources */,
+				5DFAC7FD2A3DEC6600B774AC /* MainViewController.swift in Sources */,
+				5D32BBEE2A3DF19200036417 /* PostTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
