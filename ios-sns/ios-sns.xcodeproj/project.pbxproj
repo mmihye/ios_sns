@@ -15,6 +15,9 @@
 		5D059DC92A3DD76C0026ACE7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D059DC72A3DD76C0026ACE7 /* LaunchScreen.storyboard */; };
 		5D059DD12A3DD7940026ACE7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D059DD02A3DD7940026ACE7 /* LoginViewController.swift */; };
 		5D32BBEE2A3DF19200036417 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D32BBED2A3DF19200036417 /* PostTableViewCell.swift */; };
+		5D32BBF02A3DFBD800036417 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D32BBEF2A3DFBD800036417 /* PostViewController.swift */; };
+		5D32BBF22A3DFBE300036417 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D32BBF12A3DFBE300036417 /* ProfileViewController.swift */; };
+		5D32BBF42A3E05F400036417 /* MyPostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D32BBF32A3E05F400036417 /* MyPostTableViewCell.swift */; };
 		5DFAC7FD2A3DEC6600B774AC /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFAC7FC2A3DEC6600B774AC /* MainViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +32,9 @@
 		5D059DCA2A3DD76C0026ACE7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D059DD02A3DD7940026ACE7 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		5D32BBED2A3DF19200036417 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
+		5D32BBEF2A3DFBD800036417 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		5D32BBF12A3DFBE300036417 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		5D32BBF32A3E05F400036417 /* MyPostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPostTableViewCell.swift; sourceTree = "<group>"; };
 		5DFAC7FC2A3DEC6600B774AC /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -72,6 +78,9 @@
 				5D00F23E2A3DE7B90015F2C1 /* SignUpViewController.swift */,
 				5DFAC7FC2A3DEC6600B774AC /* MainViewController.swift */,
 				5D32BBED2A3DF19200036417 /* PostTableViewCell.swift */,
+				5D32BBEF2A3DFBD800036417 /* PostViewController.swift */,
+				5D32BBF12A3DFBE300036417 /* ProfileViewController.swift */,
+				5D32BBF32A3E05F400036417 /* MyPostTableViewCell.swift */,
 			);
 			path = "ios-sns";
 			sourceTree = "<group>";
@@ -149,9 +158,12 @@
 			files = (
 				5D059DD12A3DD7940026ACE7 /* LoginViewController.swift in Sources */,
 				5D059DBD2A3DD76B0026ACE7 /* AppDelegate.swift in Sources */,
+				5D32BBF02A3DFBD800036417 /* PostViewController.swift in Sources */,
+				5D32BBF42A3E05F400036417 /* MyPostTableViewCell.swift in Sources */,
 				5D00F23F2A3DE7B90015F2C1 /* SignUpViewController.swift in Sources */,
 				5D059DBF2A3DD76B0026ACE7 /* SceneDelegate.swift in Sources */,
 				5DFAC7FD2A3DEC6600B774AC /* MainViewController.swift in Sources */,
+				5D32BBF22A3DFBE300036417 /* ProfileViewController.swift in Sources */,
 				5D32BBEE2A3DF19200036417 /* PostTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
