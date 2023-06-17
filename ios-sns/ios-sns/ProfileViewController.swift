@@ -39,7 +39,6 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
         myProfileImg.layer.cornerRadius = myProfileImg.frame.height / 2
         
         
