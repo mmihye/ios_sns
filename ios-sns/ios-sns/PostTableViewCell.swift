@@ -12,6 +12,9 @@ class PostTableViewCell: UITableViewCell{
     
     @IBOutlet weak var userContentLabel: UILabel!
     
+    @IBOutlet weak var userPostDate: UILabel!
+    @IBOutlet weak var userId: UILabel!
+    @IBOutlet weak var userNickname: UILabel!
     @IBOutlet weak var userProfileImg: UIImageView!
     
     // 쎌이 렌더링 될때
