@@ -11,6 +11,8 @@ class MyPostTableViewCell: UITableViewCell{
     
     @IBOutlet weak var myContentLabel: UILabel!
     
+    @IBOutlet weak var likeNum: UILabel!
+    @IBOutlet weak var myPostImg: UIImageView!
     @IBOutlet weak var myPostDate: UILabel!
     
     // 쎌이 렌더링 될때

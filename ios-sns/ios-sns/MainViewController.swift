@@ -16,7 +16,9 @@ public struct Post: Codable {
     let id: String
     let NickName: String
     let date:String
-
+    let profileImg:String
+    let like:Int
+    let img:String
 }
 
 class MainViewController: UIViewController {
@@ -29,14 +31,15 @@ class MainViewController: UIViewController {
     var contentArray:Array<Post> = []
     
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        // 네비게이션 바 숨김
-        self.navigationController?.isNavigationBarHidden = true
         
         let group = DispatchGroup()
-
+        
+        friendArray.removeAll()
+        contentArray.removeAll()
+        
         // 친구목록 가져오기
         db.collection("users").document(UserDefaults.standard.string(forKey: "ref")!).getDocument { (document, error) in
             if let document = document, document.exists {
@@ -60,6 +63,7 @@ class MainViewController: UIViewController {
                                             print("\(document.documentID) => \(document.data())")
                                             let id = document.data()["id"] as! String
                                             let nickName = document.data()["nickName"] as! String
+                                            let imgUrl = document.data()["profileImg"] as! String
 
                                             group.enter()
 
@@ -76,7 +80,10 @@ class MainViewController: UIViewController {
                                                         let post = Post(text: document.data()["text"] as! String,
                                                                         id: id,
                                                                         NickName: nickName,
-                                                                        date: document.data()["date"] as! String)
+                                                                        date: document.data()["date"] as! String,
+                                                                        profileImg: imgUrl,
+                                                                        like: document.data()["like"] as! Int,
+                                                                        img : document.data()["img"] as! String)
                                                         self.contentArray.append(post)
                                                     }
                                                 }
@@ -92,9 +99,6 @@ class MainViewController: UIViewController {
                                 self.postTableView.rowHeight = UITableView.automaticDimension
                                 self.postTableView.estimatedRowHeight = 120
 
-                                self.postTableView.delegate = self
-                                self.postTableView.dataSource = self
-
                                 // Reload the table view data
                                 self.postTableView.reloadData()
                             }
@@ -107,9 +111,17 @@ class MainViewController: UIViewController {
         }
 
 
-            
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
+        // 네비게이션 바 숨김
+        self.navigationController?.isNavigationBarHidden = true
+        
+        self.postTableView.delegate = self
+        self.postTableView.dataSource = self
+    }
     
 }
     
@@ -128,7 +140,15 @@ class MainViewController: UIViewController {
             cell.userId.text = "@"+contentArray[indexPath.row].id
             cell.userNickname.text = contentArray[indexPath.row].NickName
             cell.userPostDate.text = contentArray[indexPath.row].date
-            
+            FirebaseStorageManager.downloadImage(urlString: contentArray[indexPath.row].profileImg) { [weak self] image in
+                    cell.userProfileImg.image = image
+                }
+            FirebaseStorageManager.downloadImage(urlString: contentArray[indexPath.row].img) { [weak self] image in
+                cell.userImg.image = image
+                }
+            let likeCount = contentArray[indexPath.row].like
+            cell.likeNum.text = "\(likeCount)개"
+
             return cell
         }
         

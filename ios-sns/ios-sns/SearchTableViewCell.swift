@@ -18,6 +18,8 @@ class SearchTableViewCell: UITableViewCell{
     
     @IBOutlet weak var userId: UILabel!
     
+    @IBOutlet weak var followButton: UIButton!
+    
     @IBAction func followButton(_ sender: UIButton) {
         if sender.titleLabel?.text == "Follow"{
             db.collection("users").document(UserDefaults.standard.string(forKey: "ref")!).updateData([
@@ -38,6 +40,24 @@ class SearchTableViewCell: UITableViewCell{
     override func awakeFromNib() {
         super.awakeFromNib()
         userProfileImg.layer.cornerRadius = userProfileImg.frame.height / 2
+        
+        // 친구인지 확인
+        db.collection("users").document(UserDefaults.standard.string(forKey: "ref")!).getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let data = document.data() {
+                    if let friends = data["friends"] as? Array<String> {
+                        if friends.contains(self.userNickname.text!) {
+                            self.followButton.setTitle("UnFollow", for: .normal)
+                            self.followButton.setTitleColor(UIColor.gray, for: .normal)
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
     }
     
 }

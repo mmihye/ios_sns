@@ -8,16 +8,18 @@
 import UIKit
 import FirebaseCore
 import FirebaseFirestore
+import FirebaseStorage
 
 
 public struct MyPost: Codable {
 
     let text: String
     let date: String
-
+    let like: Int
+    let img: String
 }
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, UITabBarControllerDelegate{
     let db = Firestore.firestore()
     
     @IBOutlet weak var myProfileImg: UIImageView!
@@ -41,53 +43,73 @@ class ProfileViewController: UIViewController {
     
     var contentArray: Array<MyPost> = []
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        
+        contentArray.removeAll()
+         
+         // Create a DispatchGroup
+         let group = DispatchGroup()
+
+         // Enter the DispatchGroup before the Firestore operation
+         group.enter()
+         
+         db.collection("users").document(UserDefaults.standard.string(forKey: "ref")!).getDocument { (document, error) in
+             if let document = document, document.exists {
+                 let urlString = document.data()!["profileImg"] as! String
+                 FirebaseStorageManager.downloadImage(urlString: urlString) { [weak self] image in
+                         self?.myProfileImg.image = image
+                     }
+             } else {
+                 print("Document does not exist")
+             }
+         }
+
+         db.collection("users").document(UserDefaults.standard.string(forKey: "ref")!).collection("posts")
+             .getDocuments{ (querySnapshot, error) in
+             defer {
+                 // Leave the DispatchGroup when the Firestore operation completes
+                 group.leave()
+             }
+
+             if let error = error {
+                 print("Error getting documents: \(error)")
+             } else {
+                 for document in querySnapshot!.documents {
+                     print("\(document.documentID) => \(document.data())")
+                     let myPost = MyPost(text: document.data()["text"] as! String, date: document.data()["date"] as! String, like : document.data()["like"] as! Int,
+                                         img: document.data()["img"] as! String)
+                     self.contentArray.append(myPost)
+                 }
+             }
+         }
+
+         // Notify the DispatchGroup when all asynchronous tasks are complete
+         group.notify(queue: .main) {
+             // Perform your synchronous tasks here, such as configuring the table view
+             self.myPostTableView.rowHeight = UITableView.automaticDimension
+             self.myPostTableView.estimatedRowHeight = 120
+
+             // Reload the table view data
+             self.myPostTableView.reloadData()
+         }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tabBarController?.delegate = self
 
         // Do any additional setup after loading the view.
         myProfileImg.layer.cornerRadius = myProfileImg.frame.height / 2
         
         myNickName.text = UserDefaults.standard.string(forKey: "nickName")
         myId.text = "@"+UserDefaults.standard.string(forKey: "id")!
-        
-        
-        // Create a DispatchGroup
-        let group = DispatchGroup()
-
-        // Enter the DispatchGroup before the Firestore operation
-        group.enter()
-
-        db.collection("users").document(UserDefaults.standard.string(forKey: "ref")!).collection("posts")
-            .getDocuments{ (querySnapshot, error) in
-            defer {
-                // Leave the DispatchGroup when the Firestore operation completes
-                group.leave()
-            }
-
-            if let error = error {
-                print("Error getting documents: \(error)")
-            } else {
-                for document in querySnapshot!.documents {
-                    print("\(document.documentID) => \(document.data())")
-                    let myPost = MyPost(text: document.data()["text"] as! String, date: document.data()["date"] as! String)
-                    self.contentArray.append(myPost)
-                }
-            }
-        }
-
-        // Notify the DispatchGroup when all asynchronous tasks are complete
-        group.notify(queue: .main) {
-            // Perform your synchronous tasks here, such as configuring the table view
-            self.myPostTableView.rowHeight = UITableView.automaticDimension
-            self.myPostTableView.estimatedRowHeight = 120
-            
-            self.myPostTableView.delegate = self
-            self.myPostTableView.dataSource = self
-            self.myPostTableView.isEditing = false
-
-            // Reload the table view data
-            self.myPostTableView.reloadData()
-        }
+       
+        self.myPostTableView.delegate = self
+        self.myPostTableView.dataSource = self
+        self.myPostTableView.isEditing = false
     
     }
     
@@ -106,46 +128,45 @@ extension ProfileViewController: UITableViewDataSource{
         cell.myContentLabel.text = contentArray[indexPath.row].text
         cell.myPostDate.text = contentArray[indexPath.row].date
     
+        let likeCount = contentArray[indexPath.row].like
+        cell.likeNum.text = "\(likeCount)개"
+        
+        FirebaseStorageManager.downloadImage(urlString: contentArray[indexPath.row].img) { [weak self] image in
+            cell.myPostImg.image = image
+        }
         
         return cell
     }
     
 }
-
-extension ProfileViewController: UITableViewDelegate{
+extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-            
-        var documentID = ""
-        
-        if editingStyle == .delete{
-            // 선택된 row의 플랜을 가져온다
+        if editingStyle == .delete {
             let post = self.contentArray[indexPath.row]
-            db.collection("users").document(UserDefaults.standard.string(forKey: "ref")!).collection("posts")
-                .whereField("text", isEqualTo: post.text).getDocuments() { (querySnapshot, err) in
-                    if let err = err {
-                        print("Error getting documents: \(err)")
+            let currentUserRef = UserDefaults.standard.string(forKey: "ref")!
+            
+            db.collection("users").document(currentUserRef).collection("posts")
+                .whereField("text", isEqualTo: post.text).getDocuments() { (querySnapshot, error) in
+                    if let error = error {
+                        print("Error getting documents: \(error)")
                     } else {
-                        for document in querySnapshot!.documents {
-                            print("\(document.documentID) => \(document.data())")
-                            documentID = document.documentID
-                            self.db.collection("users").document(UserDefaults.standard.string(forKey: "ref")!).collection("posts")
-                                .document(documentID).delete() { err in
-                                    if let err = err {
-                                        print("Error removing document: \(err)")
+                        guard let documents = querySnapshot?.documents else { return }
+                        for document in documents {
+                            let documentID = document.documentID
+                            self.db.collection("users").document(currentUserRef).collection("posts")
+                                .document(documentID).delete { error in
+                                    if let error = error {
+                                        print("Error removing document: \(error)")
                                     } else {
                                         print("Document successfully removed!")
-                                        self.myPostTableView.reloadData()
+                                        // Update the data and UI after deleting the item
+                                        self.contentArray.remove(at: indexPath.row)
+                                        tableView.reloadData()
                                     }
                                 }
                         }
                     }
             }
-            
-            
-
-            }
+        }
     }
 }
-
-
-
